@@ -23,7 +23,7 @@ jobs:
           first_char=$(cut -c 1 output.txt)
           if [ "$first_char" = "{" ]; then
             head -c 800 output.txt
-          else
+          else 
             cat output.txt
             exit 1
           fi
