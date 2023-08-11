@@ -1,4 +1,7 @@
-name: "MurphySec code scan"
+name: "T-Sec Xcheck"
+env:
+  SERVER_URL: "http://1.13.0.211:8080"
+  ACTION_TYPE: "SSCA"
 on:
   push:
     branches:
@@ -9,15 +12,15 @@ jobs:
     steps:
       - name: Checkout_Actions
         uses: actions/checkout@v3
-      - name: Install MurphySec code scan cli
+      - name: Install T-Sec Xcheck cli
         run: |
-          wget -q https://s.murphysec.com/release/install.sh -O - | /bin/bash
+          echo "current pwd: $(pwd)"
+          ls
+          wget -q $SERVER_URL/static/cli/install.sh -O - | /bin/bash
       - name: Code scan
-        run: murphysec  scan . --token ${{ secrets.MURPHYSEC_TOKEN }} --json >scan_results.json
-      - name: Format data
-        run: | 
-          wget https://s.murphysec.com/github_actions_format.py
-          python3 github_actions_format.py
+        run: xcheck-cli --server $SERVER_URL --token ${{ secrets.MURPHYSEC_TOKEN }}  --type $ACTION_TYPE project run-devops --wait --all --format detail --code . --output ./detail_result.json $GITHUB_REPOSITORY
+      - name: Format Result
+        run: xcheck-cli sarif --output results.sarif .\detail_result.json
       - name: Check if file exists
         run: |
           if [ -f "results.sarif" ]; then
@@ -25,7 +28,7 @@ jobs:
           else
             echo "file_exists=false" >> $GITHUB_ENV
           fi
-      # Push the Snyk Code results into GitHub Code Scanning tab
+      # Push the results into GitHub Code Scanning tab
       - name: Upload result to GitHub Code Scanning
         if: env.file_exists == 'true'
         uses: github/codeql-action/upload-sarif@v2
