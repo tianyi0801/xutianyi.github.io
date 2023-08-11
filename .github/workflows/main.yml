@@ -18,7 +18,7 @@ jobs:
           ls
           wget -q $SERVER_URL/static/cli/install.sh -O - | /bin/bash
       - name: Code scan
-        run: xcheck-cli --server $SERVER_URL --token ${{ secrets.MURPHYSEC_TOKEN }}  --type $ACTION_TYPE project run-devops --wait --all --format detail --code . --output ./detail_result.json $GITHUB_REPOSITORY
+        run: xcheck-cli --server $SERVER_URL --token ${{ secrets.XCHECK_TOKEN }}  --type $ACTION_TYPE project run-devops --wait --all --format detail --code . --output ./detail_result.json $GITHUB_REPOSITORY
       - name: Format Result
         run: xcheck-cli sarif --output results.sarif .\detail_result.json
       - name: Check if file exists
