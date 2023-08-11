@@ -18,7 +18,7 @@ jobs:
           wget -q $SERVER_URL/static/cli/install.sh -O - | /bin/bash
       - name: Code scan
         run: |
-          xcheck-cli --server $SERVER_URL --token ${{ secrets.XCHECK_TOKEN }}  --type $ACTION_TYPE project run-devops --wait --all --format detail --code . --output detail_result.json $GITHUB_REPOSITORY > output.txt
+          xcheck-cli --server $SERVER_URL --token ${{ secrets.XCHECK_TOKEN }}  --type $ACTION_TYPE project run-devops --wait --all --format detail --code $(pwd) --output detail_result.json $GITHUB_REPOSITORY > output.txt
           echo "$(ls)"
           first_char=$(cut -c 1 output.txt)
           if [ "$first_char" = "{" ]; then
