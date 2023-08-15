@@ -29,6 +29,7 @@ jobs:
       - name: Format Result
         run: |
           xcheck-cli --type $ACTION_TYPE sarif --all --output results.sarif detail_result.json
+          cat results.sarif
       - name: Check if file exists
         run: |
           if [ -f "results.sarif" ]; then
