@@ -1,6 +1,6 @@
 name: "T-Sec Xcheck"
 env:
-  SERVER_URL: "http://1.13.0.211:8080"
+  SERVER_URL: "http://xxx:xxxx"
   ACTION_TYPE: "SSCA"
 on:
   push:
@@ -28,8 +28,7 @@ jobs:
           fi
       - name: Format Result
         run: |
-          xcheck-cli sarif --output results.sarif detail_result.json
-          cat results.sarif
+          xcheck-cli --type $ACTION_TYPE sarif --all --output results.sarif detail_result.json
       - name: Check if file exists
         run: |
           if [ -f "results.sarif" ]; then
