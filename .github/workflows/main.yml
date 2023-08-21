@@ -15,7 +15,7 @@ jobs:
       - name: Install T-Sec Xcheck cli
         run: |
           echo "current pwd: $(pwd)"
-          wget $SERVER_URL/static/cli/install.sh -O - | /bin/bash
+          wget -q --timeout 10 $SERVER_URL/static/cli/install.sh -O - | /bin/bash
       - name: Code scan
         run: |
           xcheck-cli --server $SERVER_URL --token ${{ secrets.XCHECK_TOKEN }}  --type $ACTION_TYPE project run-devops --wait --all --format detail --code $(pwd) --output detail_result.json $GITHUB_REPOSITORY > output.txt
