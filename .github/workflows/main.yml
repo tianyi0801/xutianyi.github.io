@@ -16,7 +16,7 @@ jobs:
         run: |
           echo "current pwd: $(pwd)"
           # wget $SERVER_URL/static/cli/install.sh
-          curl -sSL $SERVER_URL/static/cli/install.sh | /bin/bash
+          curl --connect-timeout 10 -sSL $SERVER_URL/static/cli/install.sh | /bin/bash
       - name: Code scan
         run: |
           xcheck-cli --server $SERVER_URL --token ${{ secrets.XCHECK_TOKEN }}  --type $ACTION_TYPE project run-devops --wait --all --format detail --code $(pwd) --output detail_result.json $GITHUB_REPOSITORY > output.txt
