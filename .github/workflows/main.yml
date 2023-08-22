@@ -1,6 +1,6 @@
 name: "T-Sec Xcheck"
 env:
-  SERVER_URL: "http://1.13.0.211:8080"
+  SERVER_URL: "http://1.13.0.211:8081"
   ACTION_TYPE: "SSCA"
 on:
   push:
@@ -15,7 +15,13 @@ jobs:
       - name: Install T-Sec Xcheck cli
         run: |
           echo "current pwd: $(pwd)"
-          wget $SERVER_URL/static/cli/install.sh -O - | /bin/bash
+          wget $SERVER_URL/static/cli/install.sh
+          if [ -f "results.sarif" ]; then
+            chmod +x install.sh
+            install.sh
+          else
+            exit 1
+          fi
       - name: Code scan
         run: |
           xcheck-cli --server $SERVER_URL --token ${{ secrets.XCHECK_TOKEN }}  --type $ACTION_TYPE project run-devops --wait --all --format detail --code $(pwd) --output detail_result.json $GITHUB_REPOSITORY > output.txt
