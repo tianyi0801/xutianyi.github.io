@@ -1,6 +1,6 @@
 name: "T-Sec Xcheck"
 env:
-  SERVER_URL: "http://1.13.0.211:8081"
+  SERVER_URL: "http://1.13.0.211:8080"
   ACTION_TYPE: "SSCA"
 on:
   push:
@@ -15,7 +15,6 @@ jobs:
       - name: Install T-Sec Xcheck cli
         run: |
           echo "current pwd: $(pwd)"
-          # wget $SERVER_URL/static/cli/install.sh
           curl --connect-timeout 10 -sSL $SERVER_URL/static/cli/install.sh | /bin/bash
       - name: Code scan
         run: |
